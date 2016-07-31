@@ -152,7 +152,14 @@
     </property>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuIon">
+    <property name="title">
+     <string>Option</string>
+    </property>
+    <addaction name="actionConfigure_Base_Path"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuIon"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -166,6 +173,11 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionConfigure_Base_Path">
+   <property name="text">
+    <string>Configure Base Path</string>
    </property>
   </action>
  </widget>

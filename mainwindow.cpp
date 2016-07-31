@@ -4,6 +4,8 @@
 #include <QTextStream>
 #include <qfile.h>
 #include <QIODevice>
+#include <QDir>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -113,22 +115,42 @@ void MainWindow::on_pushButton_3_clicked()
     //File Section
     lines.append(filesSection);
     int rowCount = tableModel->rowCount();
+    QModelIndex index_begin = tableModel->index(0,0);
+    QString real_fileName = tableModel->data(index_begin).toString();
+
+    QString basePath = getFilePath(real_fileName);
+    bool isSubDir=false;
+
     for(int i=0;i<rowCount;i++){
         QModelIndex index0 = tableModel->index(i,0);
         QString real_fileName = tableModel->data(index0).toString();
 
-        QString fileName = getFileName(real_fileName);
+        QString fileName = getFileXiangduiPath(real_fileName, basePath);
+        isSubDir = fileName.indexOf(QDir::separator())>0;
 
         QModelIndex index1 = tableModel->index(i,1);
         QString isRegister = tableModel->data(index1).toString();
 
         QString strLine;
         if(isRegister=="0"){
-            strLine = QString("Source: \"%1\"; DestDir: \"{app}\";Flags:ignoreversion").arg(fileName);
+
+            if(!isSubDir)
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\";Flags:ignoreversion").arg(fileName);
+            else{
+                QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\";Flags:ignoreversion").arg(fileName,subdir);
+            }
         }
         else
         {
-            strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
+            if(!isSubDir)
+                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
+            else
+            {
+                QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
+            }
+
         }
 
 
@@ -152,7 +174,7 @@ void MainWindow::on_pushButton_3_clicked()
                    stream << *it << "\n";
                file.close();
 
-               qWarning("Generate Success!");
+               QMessageBox::information(this,"Congralution","Create inno setup script success!",QMessageBox::Ok);
            }
     }
 }

@@ -61,6 +61,26 @@ private:
         return fi.fileName();
     }
 
+    QString getFilePath(const QString& fileName){
+        QFileInfo fi(fileName);
+        return fi.absolutePath();
+    }
+
+
+    QString getFileXiangduiPath(const QString& fileName,const QString& basePath){
+
+        int iPos = fileName.indexOf(basePath);
+        if(iPos==-1)
+            return QString("");
+
+        int Pos = basePath.length();
+
+        if(Pos>0)
+            return fileName.mid(Pos+1);
+        else
+            return QString("");
+    }
+
     QString getCurDay(){
         QDateTime now;
         now = QDateTime::currentDateTime();
