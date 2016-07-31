@@ -25,7 +25,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="le_AppName"/>
+       <widget class="QLineEdit" name="le_AppName">
+        <property name="styleSheet">
+         <string notr="true">background:white</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -39,7 +43,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="le_Version"/>
+       <widget class="QLineEdit" name="le_Version">
+        <property name="styleSheet">
+         <string notr="true">background:white</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -53,7 +61,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="le_InstallDir"/>
+       <widget class="QLineEdit" name="le_InstallDir">
+        <property name="styleSheet">
+         <string notr="true">background:white</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -67,7 +79,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="le_ExeFile"/>
+       <widget class="QLineEdit" name="le_ExeFile">
+        <property name="styleSheet">
+         <string notr="true">background:white</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_4">
