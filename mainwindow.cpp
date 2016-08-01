@@ -126,7 +126,7 @@ void MainWindow::on_pushButton_3_clicked()
         QString real_fileName = tableModel->data(index0).toString();
 
         QString fileName = getFileXiangduiPath(real_fileName, basePath);
-        isSubDir = fileName.indexOf(QDir::separator())>0;
+        isSubDir = fileName.indexOf("/")>0;
 
         QModelIndex index1 = tableModel->index(i,1);
         QString isRegister = tableModel->data(index1).toString();
@@ -138,7 +138,9 @@ void MainWindow::on_pushButton_3_clicked()
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\";Flags:ignoreversion").arg(fileName);
             else{
                 QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
-                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\";Flags:ignoreversion").arg(fileName,subdir);
+                subdir.replace("/",QDir::separator());
+                fileName.replace("/",QDir::separator());
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\";Flags:ignoreversion").arg(fileName,subdir);
             }
         }
         else
@@ -147,8 +149,11 @@ void MainWindow::on_pushButton_3_clicked()
                  strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
             else
             {
+                //QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
                 QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
-                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
+                subdir.replace("/",QDir::separator());
+                fileName.replace("/",QDir::separator());
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
             }
 
         }
