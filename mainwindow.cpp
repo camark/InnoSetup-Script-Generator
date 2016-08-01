@@ -132,6 +132,7 @@ void MainWindow::on_pushButton_3_clicked()
         QString isRegister = tableModel->data(index1).toString();
 
         QString strLine;
+        fileName.replace("/","\\");
         if(isRegister=="0"){
 
             if(!isSubDir)
@@ -139,7 +140,7 @@ void MainWindow::on_pushButton_3_clicked()
             else{
                 QString subdir = fileName.mid(0,fileName.indexOf("/"));
                 subdir.replace("/",QDir::separator());
-                fileName.replace("/",QDir::separator());
+
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\";Flags:ignoreversion").arg(fileName,subdir);
             }
         }
@@ -148,11 +149,10 @@ void MainWindow::on_pushButton_3_clicked()
             if(!isSubDir)
                  strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
             else
-            {
-                //QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+            {                
                 QString subdir = fileName.mid(0,fileName.indexOf("/"));
                 subdir.replace("/",QDir::separator());
-                fileName.replace("/",QDir::separator());
+
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
             }
 
