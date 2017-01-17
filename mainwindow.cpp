@@ -100,7 +100,8 @@ void MainWindow::on_pushButton_3_clicked()
     appVersion.append(ui->le_Version->text());
     lines.append(appVersion);
     QString defaultInstallDir;
-    defaultInstallDir.append("DefaultDirName={pf}\\emz\\");
+    //defaultInstallDir.append("DefaultDirName={pf}\\emz\\");
+    defaultInstallDir.append("DefaultDirName={userappdata}\\emz\\");
     defaultInstallDir.append(ui->le_InstallDir->text());
     lines.append(defaultInstallDir);
     lines.append(tr("DisableProgramGroupPage=yes"));
@@ -171,6 +172,12 @@ void MainWindow::on_pushButton_3_clicked()
     QString exeFile;
     exeFile = QFileDialog::getSaveFileName(this,"Select generated File:");
     if(!exeFile.isEmpty()){
+
+        if(!exeFile.endsWith(".iss"))
+        {
+            exeFile.append(".iss");
+        }
+
         QFile file(exeFile);
 
         if ( file.open(QIODevice::WriteOnly) ) {
