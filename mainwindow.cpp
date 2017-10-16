@@ -6,6 +6,8 @@
 #include <QIODevice>
 #include <QDir>
 #include <QMessageBox>
+#include <QtPlugin>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -133,6 +135,7 @@ void MainWindow::on_pushButton_3_clicked()
         QString isRegister = tableModel->data(index1).toString();
 
         QString strLine;
+        fileName.replace("/","\\");
         if(isRegister=="0"){
 
             if(!isSubDir)
@@ -140,7 +143,7 @@ void MainWindow::on_pushButton_3_clicked()
             else{
                 QString subdir = fileName.mid(0,fileName.indexOf("/"));
                 subdir.replace("/",QDir::separator());
-                fileName.replace("/",QDir::separator());
+
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\";Flags:ignoreversion").arg(fileName,subdir);
             }
         }
@@ -149,11 +152,10 @@ void MainWindow::on_pushButton_3_clicked()
             if(!isSubDir)
                  strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
             else
-            {
-                //QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+            {                
                 QString subdir = fileName.mid(0,fileName.indexOf("/"));
                 subdir.replace("/",QDir::separator());
-                fileName.replace("/",QDir::separator());
+
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
             }
 
@@ -189,4 +191,14 @@ void MainWindow::on_pushButton_3_clicked()
                QMessageBox::information(this,"Congralution","Create inno setup script success!",QMessageBox::Ok);
            }
     }
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    int row= ui->tableView->currentIndex().row();
+    QAbstractItemModel *model = ui->tableView->model ();
+    QModelIndex index = model->index(row,0);//选中行第一列的内容
+    QVariant data = model->data(index);
+
+    ui->le_ExeFile->setText(data.toString());
 }
