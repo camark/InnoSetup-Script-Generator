@@ -207,16 +207,28 @@ void MainWindow::on_find_exe_clicked()
 {
 	QAbstractItemModel *model = ui->tableView->model();
 
+    bool bFind=false;
+
 	for (int i = 0;i < model->rowCount();i++) {
 		QVariant data = model->data(model->index(i, 0));
 
 		QString fileName = data.toString();
 
 		if (fileName.endsWith(".exe")) {
-			ui->le_ExeFile->setText(fileName);
-			return;
+            QString yes_file_name=QString("是否将 %1 设置为主程序Exe文件").arg(fileName);
+            //qDebug() << fileName;
+            QMessageBox::StandardButton sb=QMessageBox::question(this,"确认",yes_file_name,QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
+            if(sb==QMessageBox::Yes){
+                ui->le_ExeFile->setText(fileName);
+                bFind=true;
+                return;
+            }
 		}
 	}
+
+    if(!bFind){
+        QMessageBox::information(this,"警告","无法找到或者设置Exe文件",QMessageBox::Yes);
+    }
 }
 
 void MainWindow::on_pushButton_6_clicked()
