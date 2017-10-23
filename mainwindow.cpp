@@ -202,3 +202,24 @@ void MainWindow::on_pushButton_5_clicked()
 
     ui->le_ExeFile->setText(data.toString());
 }
+
+void MainWindow::on_find_exe_clicked()
+{
+	QAbstractItemModel *model = ui->tableView->model();
+
+	for (int i = 0;i < model->rowCount();i++) {
+		QVariant data = model->data(model->index(i, 0));
+
+		QString fileName = data.toString();
+
+		if (fileName.endsWith(".exe")) {
+			ui->le_ExeFile->setText(fileName);
+			return;
+		}
+	}
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    on_find_exe_clicked();
+}

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>706</width>
+    <width>847</width>
     <height>445</height>
    </rect>
   </property>
@@ -92,6 +92,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="text">
+         <string>Find ExeFile</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -149,7 +156,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>706</width>
+     <width>847</width>
      <height>23</height>
     </rect>
    </property>
@@ -191,4 +198,7 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
+ <slots>
+  <slot>find_exe_clicked()</slot>
+ </slots>
 </ui>
