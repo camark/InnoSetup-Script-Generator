@@ -35,6 +35,8 @@ private slots:
 
     void on_pushButton_6_clicked();
 
+    void on_pushButton_7_clicked();
+
 private:
     Ui::MainWindow *ui;
     QStandardItemModel *tableModel;
@@ -95,6 +97,8 @@ private:
 
         return str;
     }
+
+    void PopulateDir(QString dir);
 };
 
 #endif // MAINWINDOW_H

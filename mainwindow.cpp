@@ -74,6 +74,14 @@ void MainWindow::on_pushButton_4_clicked()
 
     if(!exeFile.isEmpty()){
         ui->le_ExeFile->setText(exeFile);
+
+        QFileInfo fi(exeFile);
+
+        QString file_name=fi.fileName();
+        QString app_name = file_name.mid(0,file_name.indexOf("."));
+
+        ui->le_AppName->setText(app_name);
+        ui->le_InstallDir->setText(app_name);
     }
 }
 
@@ -141,10 +149,14 @@ void MainWindow::on_pushButton_3_clicked()
             if(!isSubDir)
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\";Flags:ignoreversion").arg(fileName);
             else{
-                QString subdir = fileName.mid(0,fileName.indexOf("/"));
+                QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+
+                //QFileInfo fi(subdir);
+
+                //subdir=fi.absolutePath().mid(subdir.lastIndexOf("/"));
                 subdir.replace("/",QDir::separator());
 
-                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\";Flags:ignoreversion").arg(fileName,subdir);
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\";Flags:ignoreversion").arg(fileName,subdir);
             }
         }
         else
@@ -153,10 +165,10 @@ void MainWindow::on_pushButton_3_clicked()
                  strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
             else
             {                
-                QString subdir = fileName.mid(0,fileName.indexOf("/"));
+                QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
                 subdir.replace("/",QDir::separator());
 
-                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
+                strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
             }
 
         }
@@ -200,7 +212,16 @@ void MainWindow::on_pushButton_5_clicked()
     QModelIndex index = model->index(row,0);//选中行第一列的内容
     QVariant data = model->data(index);
 
-    ui->le_ExeFile->setText(data.toString());
+    QString exeFile=data.toString();
+    ui->le_ExeFile->setText(exeFile);
+
+    QFileInfo fi(exeFile);
+
+    QString file_name=fi.fileName();
+    QString app_name = file_name.mid(0,file_name.indexOf("."));
+
+    ui->le_AppName->setText(app_name);
+    ui->le_InstallDir->setText(app_name);
 }
 
 void MainWindow::on_find_exe_clicked()
@@ -234,4 +255,57 @@ void MainWindow::on_find_exe_clicked()
 void MainWindow::on_pushButton_6_clicked()
 {
     on_find_exe_clicked();
+}
+
+void MainWindow::PopulateDir(QString selDir)
+{
+    QDir dir(selDir);
+
+    QStringList nameFilters;
+    //设置文件过滤格式
+    nameFilters << "*.*";
+    //将过滤后的文件名称存入到files列表中
+    QStringList files = dir.entryList(nameFilters, QDir::Files|QDir::Readable, QDir::Name);
+    if (files.count()) {
+         for(QStringList::Iterator it=files.begin();it!=files.end();it++)
+         {
+             QString strFileName = *it;
+
+             QFileInfo fi(selDir+"/"+strFileName);
+
+             if(fi.isFile()){
+                 QStandardItem* item1 = new QStandardItem(selDir+"/"+strFileName);
+                 QStandardItem* item2 = new QStandardItem(tr("0"));
+                 QList<QStandardItem*> item;
+                 item << item1 << item2;
+                 tableModel->appendRow(item);
+             }
+         }
+    }
+
+    QStringList dirs = dir.entryList(nameFilters, QDir::AllDirs|QDir::Readable|QDir::NoDotAndDotDot, QDir::Name);
+    if(dirs.count())
+    {
+        for(QStringList::Iterator it=dirs.begin();it!=dirs.end();it++)
+        {
+            QString dirname=*it;
+
+            QString target_idr=selDir+"/"+dirname;
+
+            PopulateDir(target_idr);
+        }
+    }
+
+}
+void MainWindow::on_pushButton_7_clicked()
+{
+    QString selDir = QFileDialog::getExistingDirectory(this,"Select dir");
+
+    if (selDir.isEmpty())
+    {
+       return;
+    }
+
+    PopulateDir(selDir);
+
 }
