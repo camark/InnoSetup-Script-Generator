@@ -1,4 +1,9 @@
-set qtdeploy_dir=C:\Qt\Qt5.13.0\5.13.0\mingw73_32\bin
-%qtdeploy_dir%\\windeployqt InnoScriptGen.exe
-copy %qtdeploy_dir%\libgcc_s_dw2-1.dll .\
-copy %qtdeploy_dir%\libstdc*.dll .\
+rmdir /s /q target
+set exe_file=InnoScriptGen.exe
+set qt_cmd_file=make_dep.cmd
+mkdir target
+copy %exe_file% .\target\
+copy %qt_cmd_file% .\target\
+cd target
+call %qt_cmd_file%
+
