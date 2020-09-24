@@ -149,7 +149,7 @@ void MainWindow::on_pushButton_3_clicked()
             if(!isSubDir)
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\";Flags:ignoreversion").arg(fileName);
             else{
-                QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+                QString subdir = fileName.mid(0,fileName.lastIndexOf(QDir::separator()));
 
                 //QFileInfo fi(subdir);
 
@@ -165,7 +165,7 @@ void MainWindow::on_pushButton_3_clicked()
                  strLine = QString("Source: \"%1\"; DestDir: \"{app}\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName);
             else
             {                
-                QString subdir = fileName.mid(0,fileName.indexOf(QDir::separator()));
+                QString subdir = fileName.mid(0,fileName.lastIndexOf(QDir::separator()));
                 subdir.replace("/",QDir::separator());
 
                 strLine = QString("Source: \"%1\"; DestDir: \"{app}\\%2\\\"; CopyMode: alwaysskipifsameorolder; Flags: regserver").arg(fileName,subdir);
